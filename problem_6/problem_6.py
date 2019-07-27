@@ -1,3 +1,5 @@
+import copy
+
 class Node:
     def __init__(self, value):
         self.value = value
@@ -23,17 +25,20 @@ class NoDuplicatedLinkedList:
 
     def append(self, value):
 
-        if self.head is None:
+        if self.head == None:
             self.head = Node(value)
             return
 
         node = self.head
-        while node.next:
+        before = node
 
-            if value == node.value:
+        while node:
+            if str(value) == str(node.value):
                 return
+            before = node
             node = node.next
 
+        node = before
         node.next = Node(value)
 
     def size(self):
@@ -49,37 +54,47 @@ def union(llist_1, llist_2):
     # Your Solution Here
     newLinkedList =  NoDuplicatedLinkedList()
 
-    while llist_1.head:
-        newLinkedList.append(llist_1.head)
-        llist_1.head = llist_1.head.next
+    l1 = copy.copy(llist_1)
+    l2 = copy.copy(llist_2)
 
-    while llist_2.head:
-        newLinkedList.append(llist_2.head)
-        llist_2.head = llist_2.head.next
+    while l1.head:
+        newLinkedList.append(l1.head)
+        l1.head = l1.head.next
+
+    while l2.head:
+        newLinkedList.append(l2.head)
+        l2.head = l2.head.next
 
     return newLinkedList
 
 def intersection(llist_1, llist_2):
+
+    if not isinstance(llist_1, NoDuplicatedLinkedList) or not isinstance(llist_2, NoDuplicatedLinkedList):
+        return None
+
+    if llist_1 == None or llist_2 == None:
+        return None
+
     # Your Solution Here
     newLinkedList =  NoDuplicatedLinkedList()
     already_exist_map = {}
+    intersection = []
 
-    while llist_1.head:
-        print(llist_1.head.value)
-        already_exist_map[llist_1.head.value] = llist_1.head
-        llist_1.head = llist_1.head.next
-    print(already_exist_map)
+    l1 = copy.copy(llist_1)
+    l2 = copy.copy(llist_2)
 
-    while llist_2.head:
+    while l1.head:
+        already_exist_map[l1.head.value] = l1.head
+        l1.head = l1.head.next
+
+    while l2.head:
         # Not exsit in llist_1.
-        if not llist_2.head.value == already_exist_map.get(llist_2.head.value):
-            already_exist_map.pop(llist_2.head.value)
-        llist_2.head = llist_2.head.next
+        if already_exist_map.get(l2.head.value):
+            intersection.append(l2.head.value)
+        l2.head = l2.head.next
 
-    print(already_exist_map)
-
-    for key in already_exist_map:
-        newLinkedList.append(already_exist_map[key])
+    for value in intersection:
+        newLinkedList.append(value)
 
     return newLinkedList
 
@@ -89,35 +104,65 @@ def intersection(llist_1, llist_2):
 linked_list_1 = NoDuplicatedLinkedList()
 linked_list_2 = NoDuplicatedLinkedList()
 
-# element_1 = [3,2,4,35,6,65,6,4,3,21]
-# element_2 = [6,32,4,9,6,1,11,21,1]
-
-element_1 = [3,21,6]
-element_2 = [6,21,1]
+element_1 = [3,2,4,35,6,65,6,4,3,21]
+element_2 = [6,32,4,9,6,1,11,21,1]
 
 for i in element_1:
     linked_list_1.append(i)
-
 
 for i in element_2:
     linked_list_2.append(i)
 
 print (union(linked_list_1,linked_list_2))
-#print (intersection(linked_list_1,linked_list_2))
-#
-# # Test case 2
-#
-linked_list_3 = NoDuplicatedLinkedList()
-linked_list_4 = NoDuplicatedLinkedList()
+# Expected: 3 -> 2 -> 4 -> 35 -> 6 -> 65 -> 21 -> 32 -> 9 -> 1 -> 11 ->
+print (intersection(linked_list_1,linked_list_2))
+# Expected: 6 -> 4 -> 21 ->
+
+# Test case 2
+linked_list_1 = NoDuplicatedLinkedList()
+linked_list_2 = NoDuplicatedLinkedList()
 
 element_1 = [3,2,4,35,6,65,6,4,3,23]
 element_2 = [1,7,8,9,11,21,1]
 
 for i in element_1:
-    linked_list_3.append(i)
+    linked_list_1.append(i)
 
 for i in element_2:
-    linked_list_4.append(i)
+    linked_list_2.append(i)
 
-# print (union(linked_list_3,linked_list_4))
-# print (intersection(linked_list_3,linked_list_4))
+print (union(linked_list_1,linked_list_2))
+# Expected: 3 -> 2 -> 4 -> 35 -> 6 -> 65 -> 23 -> 1 -> 7 -> 8 -> 9 -> 11 -> 21 ->
+print (intersection(linked_list_1,linked_list_2))
+# Expected: blanks (There is not something to dispaly.)
+
+# Test case 3
+linked_list_1 = NoDuplicatedLinkedList()
+linked_list_2 = NoDuplicatedLinkedList()
+
+element_1 = None
+element_2 = None
+
+linked_list_1.append(element_1)
+linked_list_2.append(element_2)
+
+print (union(linked_list_1,linked_list_2))
+# Expected: None
+print (intersection(linked_list_1,linked_list_2))
+# Expected: None
+
+# Test case 4
+linked_list_1 = NoDuplicatedLinkedList()
+linked_list_2 = NoDuplicatedLinkedList()
+
+for i in range(10000):
+    linked_list_1.append(i)
+
+for i in range(10000):
+    # All 2
+    linked_list_2.append(2)
+
+print (union(linked_list_1,linked_list_2))
+# Expected: 0 -> 1 -> ... -> 9998 -> 9999 ->
+print (intersection(linked_list_1,linked_list_2))
+# Expected: 2 ->

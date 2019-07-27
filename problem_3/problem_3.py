@@ -83,7 +83,6 @@ def _get_binary_code_for_haffman(digit):
 
 def _buildTree(sorted_char_count):
 
-
     # Create dummy.
     dummy_root = ['root', 0]
     tree = Tree(dummy_root)
@@ -97,9 +96,6 @@ def _buildTree(sorted_char_count):
     nodes = []
     for char_count in sorted_char_count:
          nodes.append(Node(char_count[0], char_count[1]))
-
-    # for node in nodes:
-    #     print(node.get_char() + " : " + str(node.get_frequencies()))
 
     while len(nodes) >= 2:
         most_smallest_node = nodes[0]
@@ -120,7 +116,6 @@ def _buildTree(sorted_char_count):
         nodes.append(new_node)
 
         # Re:sort
-        #sorted_char_count = sorted(nodes, key = lambda k:k[1])
         nodes = sorted(nodes, key = attrgetter('frequencies'))
 
     tree.set_root(nodes[0])
