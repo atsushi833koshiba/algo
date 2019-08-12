@@ -98,8 +98,6 @@ def intersection(llist_1, llist_2):
 
     return newLinkedList
 
-
-
 # Test case 1
 linked_list_1 = NoDuplicatedLinkedList()
 linked_list_2 = NoDuplicatedLinkedList()
@@ -155,14 +153,14 @@ print (intersection(linked_list_1,linked_list_2))
 linked_list_1 = NoDuplicatedLinkedList()
 linked_list_2 = NoDuplicatedLinkedList()
 
-for i in range(10000):
+for i in range(1000):
     linked_list_1.append(i)
 
-for i in range(10000):
+for i in range(1000):
     # All 2
     linked_list_2.append(2)
 
 print (union(linked_list_1,linked_list_2))
-# Expected: 0 -> 1 -> ... -> 9998 -> 9999 ->
+# Expected: 0 -> 1 -> ... -> 998 -> 999 ->
 print (intersection(linked_list_1,linked_list_2))
 # Expected: 2 ->
